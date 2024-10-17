@@ -1,0 +1,70 @@
+:root {
+  --background-container-color: #1a1c2b;
+  --background-color: #2b2d42;
+  --sidebar-background-color: #262946;
+  --icons-color: #f0e0d9;
+  --icons-color-hover: #bfbdc4;
+}
+
+* {
+  margin: 0;
+  padding: o;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+  background-color: var(--background-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: 100vh;
+  height: 100vh;
+}
+
+.appContainer {
+  background-color: var(--background-container-color);
+  display: flex;
+  width: 80vw;
+  height: 70vh;
+  border-radius: 0.5rem;
+}
+.sidebar {
+  display: flex;
+  background-color: var(--sidebar-background-color);
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  width: 5.5rem;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.4rem 0.1rem;
+
+  overflow-y: scroll;
+}
+.sidebar::-webkit-scrollbar {
+  width: 1px; /* width of the entire scrollbar */
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent; /* color of the tracking area */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: transparent; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  border: 3px solid transparent; /* creates padding around scroll thumb */
+}
+
+.optionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: var(--icons-color);
+}
+
+.optionButton:hover {
+  background-color: #2c2f456b;
+}
