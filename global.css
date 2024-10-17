@@ -1,7 +1,7 @@
 :root {
   --background-container-color: #1a1c2b;
-  --background-color: #2b2d42;
-  --sidebar-background-color: #262946;
+  --background-color: #1f2028;
+  --sidebar-background-color: #1e2134;
   --icons-color: #f0e0d9;
   --icons-color-hover: #bfbdc4;
 }
@@ -67,4 +67,12 @@ body {
 
 .optionButton:hover {
   background-color: #2c2f456b;
+}
+
+.appContent {
+  display: flex;
+  flex: 1;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  position: relative;
 }
