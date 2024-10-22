@@ -1,4 +1,71 @@
-// Função pura que renderiza uma imagem no canvas
+const createHistory = () => {
+  let history = []
+
+  const addState = canvas => {
+    const state = canvas.toDataURL() // Salva o estado atual da imagem como um Data URL
+    history = [...history, state] // Imutabilidade
+    return history // Retorna o novo histórico
+  }
+
+  const undo = (canvas, canvasContext) => {
+    const context = canvasContext.context // Obtenha o contexto correto aqui
+    if (history.length > 1) {
+      history = history.slice(0, -1) // Remove o estado atual mantendo a imutabilidade
+      const previousState = history[history.length - 1]
+      const img = new Image()
+      img.src = previousState
+      img.onload = () => {
+        context.clearRect(0, 0, canvas.width, canvas.height) // Limpa o canvas com o contexto correto
+        context.drawImage(img, 0, 0) // Redesenha o estado anterior
+      }
+    } else if (history.length === 1) {
+      history = [] // Limpa o histórico
+      context.clearRect(0, 0, canvas.width, canvas.height) // Limpa o canvas
+    }
+    return history // Retorna o histórico atualizado
+  }
+
+  return {
+    addState,
+    undo,
+    getHistoryLength: () => history.length // Função pura para obter o tamanho do histórico
+  }
+}
+
+const imageHistory = createHistory() // Estado inicial sem imagem
+
+const updateUndoButtonState = historyLength => {
+  const undoBtn = document.getElementById('undoBtn')
+  undoBtn.disabled = historyLength === 0 // Se não houver histórico, desabilita o botão
+}
+
+const loadImage = (imageSrc, canvasContext, canvasDimensions) => {
+  const image = new Image()
+  image.src = imageSrc
+
+  image.onload = () => {
+    const dimensions = renderImage(image, {
+      width: image.width,
+      height: image.height,
+      ...canvasDimensions
+    })
+
+    const currentCanvasState = drawImageOnCanvas(
+      image,
+      canvasContext,
+      dimensions
+    )
+    const historyLength = imageHistory.addState(currentCanvasState).length
+    updateUndoButtonState(historyLength) // Atualiza o estado do botão "Undo"
+  }
+}
+
+const undoLastChange = () => {
+  const { canvas, context } = getCanvasContext('canva') // Obtenha tanto o canvas quanto o contexto
+  const historyLength = imageHistory.undo(canvas, { canvas, context }).length
+  updateUndoButtonState(historyLength) // Atualiza o estado do botão "Undo"
+}
+
 const renderImage = (image, canvasDimensions) => {
   const { width, height, maxWidth, maxHeight } = canvasDimensions
 
@@ -19,7 +86,6 @@ const renderImage = (image, canvasDimensions) => {
   }
 }
 
-// Função pura que retorna o contexto do canvas
 const getCanvasContext = canvasId => {
   const canvas = document.getElementById(canvasId)
   return {
@@ -28,7 +94,6 @@ const getCanvasContext = canvasId => {
   }
 }
 
-// Função pura que desenha uma imagem no canvas
 const drawImageOnCanvas = (image, canvasContext, dimensions) => {
   const { canvas, context } = canvasContext
   canvas.width = dimensions.width
@@ -37,12 +102,10 @@ const drawImageOnCanvas = (image, canvasContext, dimensions) => {
   return canvas.toDataURL() // Retorna o estado atual da imagem como string (ou outra representação)
 }
 
-// Função pura para abrir o input de imagem
 const openInput = inputElementId => {
   document.getElementById(inputElementId).click()
 }
 
-// Função pura que lida com o evento de mudança do input
 const handleInputChange = (inputElement, onImageLoad) => {
   const file = inputElement.files[0]
   const image = new Image()
@@ -55,7 +118,6 @@ const handleInputChange = (inputElement, onImageLoad) => {
   return image
 }
 
-// Função pura que reseta a imagem no canvas
 const resetCanvas = (originalImage, canvasContext, canvasDimensions) => {
   drawImageOnCanvas(originalImage, canvasContext, canvasDimensions)
 }
@@ -79,19 +141,9 @@ document.getElementById('fileInput').addEventListener('change', event => {
     })
 
     drawImageOnCanvas(image, canvasContext, dimensions)
+    const historyLength = imageHistory.addState(canvasContext.canvas).length
+    updateUndoButtonState(historyLength) // Atualiza o estado do botão "Undo"
   })
 })
 
-document.getElementById('resetBtn').addEventListener('click', () => {
-  // Aqui, você deve ter acesso à imagem original, que seria fornecida pelo fluxo de dados
-  // e passada como argumento, sem alterar estado global.
-  const canvasContext = getCanvasContext('canva')
-  const previewContent = document.querySelector('.previewContent')
-  const canvasDimensions = {
-    maxWidth: previewContent.clientWidth,
-    maxHeight: previewContent.clientHeight
-  }
-
-  // Exemplo de como resetar a imagem (necessário que você guarde a original em algum lugar)
-  resetCanvas(originalImage, canvasContext, canvasDimensions)
-})
+document.getElementById('undoBtn').addEventListener('click', undoLastChange)

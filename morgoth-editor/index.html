@@ -57,14 +57,13 @@
           <canvas id="canva"></canvas>
         </div>
 
-        <button class="undorBtn" disabled>Desfazer</button>
+        <button class="undorBtn" id="undoBtn" disabled>Desfazer</button>
 
         <!-- Controles de ajuste  -->
         <div id="rangeContainer" class="rangeContainer" style="display: none">
-          <label for="brightnessRange">Brilho:</label>
           <input
             type="range"
-            id="brightnessRange"
+            id="filterRange"
             min="0"
             max="200"
             value="100"
@@ -77,6 +76,7 @@
         <input type="file" hidden id="fileInput" />
       </div>
 
+      <!-- Sidebar de manipulação de efeito-->
       <aside class="sidebar" id="sidebarRight">
         <h3 class="sidebarTitle" id="sidebarRightTitle"></h3>
 
