@@ -27,24 +27,35 @@
           <i class="bx bxs-add-to-queue"></i>
           <p class="sidebarActionDecription">Adicionar imagem</p>
         </div>
-        <div class="sidebarAction" onclick="openInput('fileInput')">
+        <div
+          class="sidebarAction"
+          onclick="showRangeInput(applyBrightnessFilter)"
+        >
           <i class="bx bxs-brightness"></i>
           <p class="sidebarActionDecription">Brilho</p>
         </div>
-        <div class="sidebarAction" onclick="openInput('fileInput')">
+        <div
+          class="sidebarAction"
+          onclick="showRangeInput(applySaturationFilter)"
+        >
           <i class="bx bxs-brush-alt"></i>
           <p class="sidebarActionDecription">Saturação</p>
         </div>
-        <div class="sidebarAction" onclick="openInput('fileInput')">
+        <div class="sidebarAction" onclick="showRangeInput(applyBlurFilter)">
           <i class="bx bxs-brush"></i>
           <p class="sidebarActionDecription">Blur</p>
         </div>
-        <div class="sidebarAction" onclick="openInput('fileInput')">
+        <div
+          class="sidebarAction"
+          onclick="showRangeInput(applyContrastFilter)"
+        >
           <i class="bx bx-color-fill"></i>
           <p class="sidebarActionDecription">Contraste</p>
         </div>
-
-        <div class="sidebarAction" onclick="openInput('fileInput')">
+        <div
+          class="sidebarAction"
+          onclick="showRangeInput(applyGrayscaleFilter)"
+        >
           <i class="bx bxs-book-open"></i>
           <p class="sidebarActionDecription">Grayscale</p>
         </div>
@@ -68,7 +79,6 @@
             max="200"
             value="100"
             step="1"
-            onchange="applyBrightnessFilter(this.value)"
           />
         </div>
 

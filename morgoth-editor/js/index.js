@@ -99,7 +99,7 @@ const drawImageOnCanvas = (image, canvasContext, dimensions) => {
   canvas.width = dimensions.width
   canvas.height = dimensions.height
   context.drawImage(image, 0, 0, dimensions.width, dimensions.height)
-  return canvas.toDataURL() // Retorna o estado atual da imagem como string (ou outra representação)
+  return canvas.toDataURL() // Retorna o estado atual da imagem como string
 }
 
 const openInput = inputElementId => {
@@ -120,6 +120,24 @@ const handleInputChange = (inputElement, onImageLoad) => {
 
 const resetCanvas = (originalImage, canvasContext, canvasDimensions) => {
   drawImageOnCanvas(originalImage, canvasContext, canvasDimensions)
+}
+
+// Funções para aplicar filtros
+const applyFilter = (filterFunction, value) => {
+  const { canvas, context } = getCanvasContext('canva')
+  const imageData = context.getImageData(0, 0, canvas.width, canvas.height)
+  const data = imageData.data
+
+  filterFunction(data, value) // Aplica o filtro no array de pixels
+  context.putImageData(imageData, 0, 0) // Redesenha a imagem no canvas
+}
+
+const applyBrightnessFilter = (data, brightness) => {
+  for (let i = 0; i < data.length; i += 4) {
+    data[i] += brightness - 100 // Red
+    data[i + 1] += brightness - 100 // Green
+    data[i + 2] += brightness - 100 // Blue
+  }
 }
 
 // Exemplo de como usar essas funções
@@ -147,3 +165,20 @@ document.getElementById('fileInput').addEventListener('change', event => {
 })
 
 document.getElementById('undoBtn').addEventListener('click', undoLastChange)
+
+// Configurações para controle de ranges
+const rangeContainer = document.getElementById('rangeContainer')
+rangeContainer.onmousedown = () => {
+  rangeContainer.dataset.saving = false // Impede salvar no histórico enquanto o mouse está pressionado
+}
+
+rangeContainer.oninput = () => {
+  const value = rangeContainer.value
+  applyFilter(applyBrightnessFilter, value) // Aplica o filtro conforme o range é movimentado
+}
+
+rangeContainer.onmouseup = () => {
+  const { canvas } = getCanvasContext('canva')
+  imageHistory.addState(canvas) // Salva no histórico ao soltar o mouse
+  updateUndoButtonState(imageHistory.getHistoryLength()) // Atualiza o botão Undo
+}
