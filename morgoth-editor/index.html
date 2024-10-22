@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Morgoth - Editor de Imagens</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body>
+    <main class="appContainer">
+      <!-- Sidebar com botões de opções -->
+      <aside class="sidebar">
+        <h3 class="sidebarTitle">Opções de edição</h3>
+        <div class="sidebarAction" onclick="openInput('fileInput')">
+          <i class="bx bxs-add-to-queue"></i>
+          <p class="sidebarActionDecription">Adicionar imagem</p>
+        </div>
+        <div class="sidebarAction" onclick="openInput('fileInput')">
+          <i class="bx bxs-brightness"></i>
+          <p class="sidebarActionDecription">Brilho</p>
+        </div>
+        <div class="sidebarAction" onclick="openInput('fileInput')">
+          <i class="bx bxs-brush-alt"></i>
+          <p class="sidebarActionDecription">Saturação</p>
+        </div>
+        <div class="sidebarAction" onclick="openInput('fileInput')">
+          <i class="bx bxs-brush"></i>
+          <p class="sidebarActionDecription">Blur</p>
+        </div>
+        <div class="sidebarAction" onclick="openInput('fileInput')">
+          <i class="bx bx-color-fill"></i>
+          <p class="sidebarActionDecription">Contraste</p>
+        </div>
+
+        <div class="sidebarAction" onclick="openInput('fileInput')">
+          <i class="bx bxs-book-open"></i>
+          <p class="sidebarActionDecription">Grayscale</p>
+        </div>
+      </aside>
+
+      <!-- Conteúdo principal -->
+      <div class="appContent">
+        <!-- Div para mostrar a imagem -->
+        <div class="previewContent">
+          <canvas id="canva"></canvas>
+        </div>
+
+        <button class="undorBtn" disabled>Desfazer</button>
+
+        <!-- Controles de ajuste  -->
+        <div id="rangeContainer" class="rangeContainer" style="display: none">
+          <label for="brightnessRange">Brilho:</label>
+          <input
+            type="range"
+            id="brightnessRange"
+            min="0"
+            max="200"
+            value="100"
+            step="1"
+            onchange="applyBrightnessFilter(this.value)"
+          />
+        </div>
+
+        <!-- Input oculto para selecionar arquivos de imagem -->
+        <input type="file" hidden id="fileInput" />
+      </div>
+
+      <aside class="sidebar" id="sidebarRight">
+        <h3 class="sidebarTitle" id="sidebarRightTitle"></h3>
+
+        <footer class="sidebarFooter">
+          <div class="sidebarAction">
+            <i class="bx bxs-file-export" style="color: #ffffff"></i>
+            <p class="sidebarActionDecription">Exportar</p>
+          </div>
+        </footer>
+      </aside>
+    </main>
+
+    <script src="./js/index.js"></script>
+  </body>
+</html>
